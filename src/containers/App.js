@@ -18,7 +18,8 @@ class App extends PureComponent {
         { id: 'lijsdf', name: 'David', age: 43 }
       ],
       otherState: 'some other value',
-      showPersons: false
+      showPersons: false,
+      toggleClicked: 0
     };
   }
 
@@ -36,13 +37,13 @@ class App extends PureComponent {
 //       nextState.showPersons !== this.state.showPersons;
 //  }
 
- componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState) {
     console.log('[UPDATE App.js] Inside componentWillUpdate()', nextProps, nextState);
- }
+  }
 
- componentDidUpdate() {
+  componentDidUpdate() {
     console.log('[UPDATE App.js] Inside componentDidUpdate()');
- }
+  }
 
   nameChangedHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -71,7 +72,12 @@ class App extends PureComponent {
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow});
+    this.setState( (prevState, props) => { // eslint-disable-line no-unused-vars
+      return {
+        showPersons: !doesShow,
+        toggleClicked: prevState.toggleClicked + 1
+      }
+    });
   };
 
   render() {
